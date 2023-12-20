@@ -1,1 +1,2 @@
-Đây là file của client muốn upload lên server
+Đây là file của client muốn upload lên server = 59
+Dòng 2
