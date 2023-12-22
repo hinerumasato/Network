@@ -7,7 +7,7 @@ import Teach.Student.Repositories.StudentRepository;
 
 public class StudentService implements IService<Student> {
 
-    private StudentRepository studentRepository;
+    private StudentRepository studentRepository = new StudentRepository();
 
     @Override
     public List<Student> findAll() {
