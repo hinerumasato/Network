@@ -1,8 +1,6 @@
-package Teach;
+package Teach.Student;
 
-import java.io.Serializable;
-
-public class Student implements Serializable {
+public class Student {
     private String name;
     private int age;
     private double score;

@@ -1,4 +1,4 @@
-package Teach;
+package Teach.Student;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -15,7 +15,7 @@ public class Client {
         new Thread(process).start();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws UnknownHostException, IOException {
         new Client().startClient();
     }
 }

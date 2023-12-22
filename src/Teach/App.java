@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Teach.Student.Student;
+
 public class App {
 
     private static List<Student> students = new ArrayList<Student>(Arrays.asList(
