@@ -24,51 +24,58 @@ public class ClientProcess implements Runnable {
         this.isLogin = false;
     }
 
-
     @Override
     public void run() {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             while (!exit) {
-                if(!isLogin) {
-                    // Xử lý đăng nhập
-                    System.out.print("user ");
-                    String username = reader.readLine();
-                    System.out.print("pass ");
-                    String password = reader.readLine();
+                System.out.print("Enter your command: ");
+                String command = reader.readLine();
+                if (!command.startsWith("user ")) {
+                    if (!isLogin) {
+                        System.out.println("Can dang nhap de thuc hien thao tac nay");
+                    } else {
+                        // Gửi command tra cứu lên server
+                        netOut.writeUTF(command);
+                        netOut.flush();
 
-                    // Gửi lên cho server kiểm tra
-                    netOut.writeUTF(username);
-                    netOut.flush();
-                    netOut.writeUTF(password);
-                    netOut.flush();
-
-                    // Sau khi gửi thì đọc dữ liệu đăng nhập từ server
-                    String loginResponse = netIn.readUTF();
-                    // Nếu nội dung response là "success"
-                    if(loginResponse.equals("success")) {
-                        isLogin = true;
-                        System.out.println("Login Successfully");
+                        // Đợi phản từ server
+                        List<Student> students = receiveServerResponse();
+                        // In kết quả sau khi truy vấn
+                        printStudents(students);
                     }
                 } else {
-                    System.out.print("Enter your command: ");
-                    String command = reader.readLine();
-                    // Gửi command tra cứu lên server
-                    netOut.writeUTF(command);
-                    netOut.flush();
+                    if (!isLogin) {
+                        // Xử lý đăng nhập
+                        String username = command.split(" ")[1];
+                        System.out.print("Password command: ");
+                        String password = reader.readLine();
+                        if(password.startsWith("pass ")) {
+                            // Gửi lên cho server kiểm tra
+                            password = password.split(" ")[1];
+                            netOut.writeUTF(username);
+                            netOut.flush();
+                            netOut.writeUTF(password);
+                            netOut.flush();
+                        } else {
+                            System.out.println("Lenh dang nhap khong hop le");
+                        }
 
-                    // Đợi phản từ server
-                    List<Student> students = receiveServerResponse();
-                    // In kết quả sau khi truy vấn
-                    printStudents(students);
-                    
+                        // Sau khi gửi thì đọc dữ liệu đăng nhập từ server
+                        String loginResponse = netIn.readUTF();
+                        // Nếu nội dung response là "success"
+                        if (loginResponse.equals("success")) {
+                            isLogin = true;
+                            System.out.println("Login Successfully");
+                        }
+                    }
                 }
             }
 
             reader.close();
             socket.close();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -76,7 +83,7 @@ public class ClientProcess implements Runnable {
     private List<Student> receiveServerResponse() throws IOException {
         List<Student> result = new ArrayList<Student>();
         int size = netIn.readInt();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             String name = netIn.readUTF();
             int age = netIn.readInt();
             double score = netIn.readDouble();
@@ -91,6 +98,5 @@ public class ClientProcess implements Runnable {
             System.out.println(student);
         }
     }
-
 
 }
