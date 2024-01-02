@@ -1,3 +1,5 @@
+package Teach.RMI.RMIServer;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -8,8 +10,8 @@ public class ServerImpl extends UnicastRemoteObject implements IServer {
     }
 
     @Override
-    public void echoClientMessage(String message) {
-        System.out.println("Client said: " + message);
+    public void echo(String message) throws RemoteException {
+        System.out.println(message);
     }
     
 }
