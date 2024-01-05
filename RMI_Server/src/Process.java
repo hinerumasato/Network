@@ -5,7 +5,7 @@ import java.rmi.registry.Registry;
 public class Process {
     private void startServer() throws RemoteException {
         Registry registry = LocateRegistry.createRegistry(2003);
-        ServerInterface server = new ServerImpl();
+        IServer server = new ServerImpl();
         registry.rebind("server", server);
     }
 
