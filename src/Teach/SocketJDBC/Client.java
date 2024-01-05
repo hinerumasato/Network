@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-    public static String HOST = "localhost";
+    public static String HOST = "192.168.1.11";
     public static int PORT = 1234;
 
     private void startClient() throws UnknownHostException, IOException {
